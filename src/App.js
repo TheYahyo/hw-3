@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
+  const [name, setName] = useState('');
+  const names = useSelector(state => state);
+  const dispatch = useDispatch();
+
+  const addName = () => {
+    if (name.trim() !== '') {
+      dispatch({ type: 'ADD_NAME', payload: name });
+      setName('');
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Names</h1>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="write the name"
+      />
+      <button onClick={addName}>add name</button>
+      <ul>
+        {names.map((name, index) => (
+          <h1 key={index}>{name}</h1>
+        ))}
+      </ul>
     </div>
   );
 }
